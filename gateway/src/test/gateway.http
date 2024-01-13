@@ -1,0 +1,40 @@
+### a
+GET http://localhost:8080/aa/in
+
+### b
+GET http://localhost:8080/b/in
+
+### c
+GET http://localhost:8080/c/in
+
+
+### a rewrite
+GET http://localhost:8080/aa/re/in
+
+### b rewrite
+GET http://localhost:8080/b/re/in
+
+### c rewrite
+GET http://localhost:8080/c/re/in
+
+
+### a custom filter
+GET http://localhost:8080/aa/exception
+
+### b custom filter
+GET http://localhost:8080/b/error
+
+### c custom filter
+GET http://localhost:8080/c/exception
+
+
+### redirect
+GET http://localhost:8080/aa/asdasdas/help
+
+### redirect
+GET http://localhost:8080/aa/help
+
+
+### error
+GET http://localhost:8080/ㅁㄴㅇasd
+

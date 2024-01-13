@@ -1,0 +1,7 @@
+rootProject.name = 'study-gateway-eureka'
+include 'discovery'
+include 'gateway'
+include 'api-a'
+include 'api-b'
+include 'api-c'
+

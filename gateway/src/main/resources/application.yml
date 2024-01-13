@@ -1,0 +1,56 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gateway
+
+  cloud:
+    gateway:
+      default-filters:
+        - CustomFilter
+
+      routes:
+        - id: api-a
+          uri: lb://api-a
+          predicates:
+            - Path=/aa/**
+          filters:
+            - RewritePath=/aa/re/(?<segment>.*), /aa/rewrite-path/$\{segment}
+
+        - id: api-b
+          uri: lb://api-b
+          predicates:
+            - Path=/b/**
+          filters:
+            - RewritePath=/b/re/(?<segment>.*), /b/rewrite-path/$\{segment}
+
+        - id: api-c
+          uri: lb://api-c
+          predicates:
+            - Path=/c/**
+          filters:
+            - RewritePath=/c/re/(?<segment>.*), /c/rewrite-path/$\{segment}
+
+# logging:
+#   level:
+#     org.springframework.cloud.gateway: TRACE
+#     org.springframework.http.server.reactive: DEBUG
+#     org.springframework.web.reactive: DEBUG
+#     reactor.ipc.netty: DEBUG
+#     reactor.netty: DEBUG
+
+
+---
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka
+
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.instance_id:${random.value}}
+

@@ -1,0 +1,103 @@
+buildscript {
+    ext {
+        set('javaVersion', "17");
+        set('springBootVersion', "3.2.1");
+        set('dependencyManagementVersion', "1.1.4");
+
+        set('springCloudVersion', "2023.0.0")
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath "io.spring.gradle:dependency-management-plugin:${dependencyManagementVersion}"
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    group = 'kim.zhyun'
+    sourceCompatibility = "${javaVersion}"
+    compileJava.options.encoding = 'UTF-8'
+
+    repositories {
+        mavenCentral()
+    }
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
+    dependencies {
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        }
+    }
+
+    tasks.named('test') {
+        useJUnitPlatform()
+    }
+}
+
+project(":discovery") {
+    bootJar { enabled = true }
+    jar { enabled = false }
+
+    dependencies {
+        implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
+    }
+}
+
+project(":gateway") {
+    bootJar { enabled = true }
+    jar { enabled = false }
+
+    dependencies {
+        implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
+        implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    }
+}
+
+project(":api-a") {
+    bootJar { enabled = true }
+    jar { enabled = false }
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    }
+}
+
+project(":api-b") {
+    bootJar { enabled = true }
+    jar { enabled = false }
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    }
+}
+
+project(":api-c") {
+    bootJar { enabled = true }
+    jar { enabled = false }
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    }
+}

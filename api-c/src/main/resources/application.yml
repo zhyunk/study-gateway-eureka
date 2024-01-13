@@ -1,0 +1,21 @@
+server:
+  port: 0
+  servlet:
+    context-path: /c
+
+spring:
+  application:
+    name: api-c
+
+---
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka
+
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.instance_id:${random.value}}
